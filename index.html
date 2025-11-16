@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Список задач</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Мои задачи</h1>
+    </header>
+    
+    <div class="main-content">
+      <section class="tasks-section">
+        <h2>Все задачи</h2>
+        <div class="tasks-list" id="tasks-list">
+        </div>
+      </section>
+      
+      <section class="add-task-section">
+        <h2>Добавить задачу</h2>
+        <form id="task-form">
+          <input type="text" id="task-title" placeholder="Название задачи" required>
+          <textarea id="task-desc" placeholder="Описание (необязательно)"></textarea>
+          <select id="task-status">
+            <option value="planned">Запланирована</option>
+            <option value="progress">В работе</option>
+            <option value="done">Сделано</option>
+          </select>
+          <button type="submit">Добавить задачу</button>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <script src="code.js"></script>
+</body>
+</html>
