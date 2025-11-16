@@ -15,6 +15,17 @@
     <div class="main-content">
       <section class="tasks-section">
         <h2>Все задачи</h2>
+        
+        <div class="filter">
+          <label>Показать:</label>
+          <select id="status-filter" onchange="filterTasks()">
+            <option value="all">Все задачи</option>
+            <option value="planned">Запланированные</option>
+            <option value="progress">В работе</option>
+            <option value="done">Готовые</option>
+          </select>
+        </div>
+        
         <div class="tasks-list" id="tasks-list">
         </div>
       </section>
@@ -25,9 +36,9 @@
           <input type="text" id="task-title" placeholder="Название задачи" required>
           <textarea id="task-desc" placeholder="Описание (необязательно)"></textarea>
           <select id="task-status">
-            <option value="planned">Запланирована</option>
+            <option value="planned">Запланированная</option>
             <option value="progress">В работе</option>
-            <option value="done">Сделано</option>
+            <option value="done">Готовая</option>
           </select>
           <button type="submit">Добавить задачу</button>
         </form>

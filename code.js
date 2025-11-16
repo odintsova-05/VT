@@ -3,18 +3,19 @@ document.addEventListener('DOMContentLoaded', function() {
   const taskTitle = document.getElementById('task-title');
   const taskDesc = document.getElementById('task-desc');
   const taskStatus = document.getElementById('task-status');
+  const statusFilter = document.getElementById('status-filter');
   const tasksList = document.getElementById('tasks-list');
 
   let tasks = [];
   let nextId = 1;
 
-  function generateId() {
+  function makeId() {
     return nextId++;
   }
 
   function addTask(title, description, status) {
     const task = {
-      id: generateId(),
+      id: makeId(),
       title: title,
       description: description,
       status: status
@@ -30,22 +31,40 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function changeStatus(id, newStatus) {
-    const task = tasks.find(task => task.id === id);
-    if (task) {
-      task.status = newStatus;
-      renderTasks();
+    for (let i = 0; i < tasks.length; i++) {
+      if (tasks[i].id === id) {
+        tasks[i].status = newStatus;
+        break;
+      }
     }
+    renderTasks();
   }
 
-  function renderTasks() {
+  function filterTasks() {
+    const filterValue = statusFilter.value;
+    renderTasks(filterValue);
+  }
+
+  function renderTasks(filterStatus = 'all') {
     tasksList.innerHTML = '';
     
-    if (tasks.length === 0) {
-      tasksList.innerHTML = '<p>Задач пока нет</p>';
+    let filteredTasks = tasks;
+    if (filterStatus !== 'all') {
+      filteredTasks = [];
+      for (let i = 0; i < tasks.length; i++) {
+        if (tasks[i].status === filterStatus) {
+          filteredTasks.push(tasks[i]);
+        }
+      }
+    }
+    
+    if (filteredTasks.length === 0) {
+      tasksList.innerHTML = '<p>Задач нет</p>';
       return;
     }
     
-    tasks.forEach(task => {
+    for (let i = 0; i < filteredTasks.length; i++) {
+      const task = filteredTasks[i];
       const taskElement = document.createElement('div');
       taskElement.className = 'task-item';
       
@@ -55,25 +74,23 @@ document.addEventListener('DOMContentLoaded', function() {
       taskElement.innerHTML = `
         <div class="task-title">${task.title}</div>
         ${task.description ? `<div class="task-desc">${task.description}</div>` : ''}
-        <div>
-          <span class="task-status ${statusClass}">${statusText}</span>
-        </div>
+        <div class="task-status ${statusClass}">${statusText}</div>
         <div class="task-actions">
-          <button class="btn" onclick="changeStatus(${task.id}, 'planned')">Запланирована</button>
-          <button class="btn" onclick="changeStatus(${task.id}, 'progress')">В работе</button>
-          <button class="btn" onclick="changeStatus(${task.id}, 'done')">Сделано</button>
+          <button class="btn" onclick="changeStatus(${task.id}, 'planned')">Запланировать</button>
+          <button class="btn" onclick="changeStatus(${task.id}, 'progress')">В работу</button>
+          <button class="btn" onclick="changeStatus(${task.id}, 'done')">Завершить</button>
           <button class="btn btn-delete" onclick="deleteTask(${task.id})">Удалить</button>
         </div>
       `;
       
       tasksList.appendChild(taskElement);
-    });
+    }
   }
 
   function getStatusText(status) {
-    if (status === 'planned') return 'Запланирована';
+    if (status === 'planned') return 'Запланированная';
     if (status === 'progress') return 'В работе';
-    if (status === 'done') return 'Сделано';
+    if (status === 'done') return 'Готовая';
     return 'Неизвестно';
   }
 
@@ -101,4 +118,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
   window.deleteTask = deleteTask;
   window.changeStatus = changeStatus;
+  window.filterTasks = filterTasks;
 });
