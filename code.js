@@ -40,6 +40,44 @@ document.addEventListener('DOMContentLoaded', function() {
     renderTasks();
   }
 
+  function editTask(id) {
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+
+    const taskElement = document.querySelector(`[data-task-id="${id}"]`);
+    if (!taskElement) return;
+
+    taskElement.innerHTML = `
+      <div class="edit-form">
+        <input type="text" id="edit-title-${id}" value="${task.title}" placeholder="Название">
+        <textarea id="edit-desc-${id}" placeholder="Описание">${task.description || ''}</textarea>
+        <div class="edit-buttons">
+          <button class="btn btn-save" onclick="saveTask(${id})">Сохранить</button>
+          <button class="btn btn-cancel" onclick="cancelEdit(${id})">Отмена</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function saveTask(id) {
+    const newTitle = document.getElementById(`edit-title-${id}`).value;
+    const newDesc = document.getElementById(`edit-desc-${id}`).value;
+
+    for (let i = 0; i < tasks.length; i++) {
+      if (tasks[i].id === id) {
+        tasks[i].title = newTitle;
+        tasks[i].description = newDesc;
+        break;
+      }
+    }
+
+    renderTasks();
+  }
+
+  function cancelEdit(id) {
+    renderTasks();
+  }
+
   function filterTasks() {
     const filterValue = statusFilter.value;
     renderTasks(filterValue);
@@ -67,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const task = filteredTasks[i];
       const taskElement = document.createElement('div');
       taskElement.className = 'task-item';
+      taskElement.setAttribute('data-task-id', task.id);
       
       const statusText = getStatusText(task.status);
       const statusClass = getStatusClass(task.status);
@@ -76,6 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ${task.description ? `<div class="task-desc">${task.description}</div>` : ''}
         <div class="task-status ${statusClass}">${statusText}</div>
         <div class="task-actions">
+          <button class="btn btn-edit" onclick="editTask(${task.id})">Изменить</button>
           <button class="btn" onclick="changeStatus(${task.id}, 'planned')">Запланировать</button>
           <button class="btn" onclick="changeStatus(${task.id}, 'progress')">В работу</button>
           <button class="btn" onclick="changeStatus(${task.id}, 'done')">Завершить</button>
@@ -119,4 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
   window.deleteTask = deleteTask;
   window.changeStatus = changeStatus;
   window.filterTasks = filterTasks;
+  window.editTask = editTask;
+  window.saveTask = saveTask;
+  window.cancelEdit = cancelEdit;
 });
