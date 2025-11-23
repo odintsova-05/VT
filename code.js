@@ -9,6 +9,11 @@ document.addEventListener('DOMContentLoaded', function() {
   let tasks = [];
   let nextId = 1;
 
+  !localStorage.tasks? tasks=[]:tasks=JSON.parse(localStorage.getItem('tasks'))
+  const updateLocalStorage=() => {
+    localStorage.setItem('tasks',JSON.stringify(tasks))
+  }
+
   function makeId() {
     return nextId++;
   }
@@ -22,11 +27,13 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     tasks.push(task);
+    updateLocalStorage()
     renderTasks();
   }
 
   function deleteTask(id) {
     tasks = tasks.filter(task => task.id !== id);
+    updateLocalStorage()
     renderTasks();
   }
 
@@ -37,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
         break;
       }
     }
+    updateLocalStorage()
     renderTasks();
   }
 
@@ -57,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       </div>
     `;
+    updateLocalStorage()
   }
 
   function saveTask(id) {
@@ -70,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
         break;
       }
     }
-
+    updateLocalStorage()
     renderTasks();
   }
 
@@ -123,6 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       `;
       
+      updateLocalStorage()
       tasksList.appendChild(taskElement);
     }
   }
@@ -154,6 +164,9 @@ document.addEventListener('DOMContentLoaded', function() {
       taskTitle.value = '';
       taskDesc.value = '';
     }
+    updateLocalStorage()
+    
+
   });
 
   window.deleteTask = deleteTask;
@@ -162,4 +175,6 @@ document.addEventListener('DOMContentLoaded', function() {
   window.editTask = editTask;
   window.saveTask = saveTask;
   window.cancelEdit = cancelEdit;
+  updateLocalStorage();
+  renderTasks();
 });
