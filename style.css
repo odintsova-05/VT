@@ -210,7 +210,6 @@ button[type="submit"] {
   font-weight: bold;
 }
 
-/* Стили для Drag and Drop */
 .task-item.dragging {
     opacity: 0.5;
     background-color: #e0e0e0;
@@ -223,7 +222,7 @@ button[type="submit"] {
     margin: 10px 0;
 }
 
-.task-title {
+.task-drag {
     cursor: move;
     user-select: none;
 }
@@ -232,12 +231,10 @@ button[type="submit"] {
     background-color: #f5f5f5;
 }
 
-/* Простые анимации */
 .task-item {
     transition: all 0.3s ease;
 }
 
-/* Визуальные подсказки */
 .drag-handle {
     cursor: move;
     color: #666;
