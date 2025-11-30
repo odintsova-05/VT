@@ -202,4 +202,5 @@ document.addEventListener('DOMContentLoaded', function() {
   window.cancelEdit = cancelEdit = () => renderTasks();
   
   renderTasks();
+
 });
